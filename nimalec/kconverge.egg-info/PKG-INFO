@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: kconverge
+Version: 0.1.0
+Summary: Framework to determine optimal k-point mesh density in DFT calculation (via QuantumESPRESSO)
+Home-page: UNKNOWN
+Author: Nima Leclerc
+Author-email: nl475@cornell.edu
+License: LICENSE.txt
+Description: UNKNOWN
+Platform: UNKNOWN
