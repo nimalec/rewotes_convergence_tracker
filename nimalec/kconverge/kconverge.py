@@ -68,6 +68,8 @@ class Kconverge:
    def set_symmetry(self):
 
    def run_convergence_test(self):
+       ## Should make a python file to run in the background (test this method first).
        ## should run in the background 'nohup python ' in background.
+       ## Check continuously for run status ==>
 
    def kill_convergence_test(self):
