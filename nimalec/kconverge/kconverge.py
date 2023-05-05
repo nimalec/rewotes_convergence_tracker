@@ -25,8 +25,6 @@ class Kconverge:
         ## convergence_parameter ==> depending on calculation type, will determine an appropriate workflow to set up calculation
         ## convergence threshodl ==> depends on calculation type
         ##Assumes a pre-relaxed structure
-
-
         ## convergence parameters: phonon frequency, bands [scalar, vector, tensor]
         ## total energy
         ## total stress
