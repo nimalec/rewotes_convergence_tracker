@@ -1,5 +1,7 @@
 import subprocess
 import re
+
+import os 
 from os.path import exists
 
 def generate_run_script(run_parameters, file_path):
