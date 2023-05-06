@@ -25,8 +25,8 @@ def extract_job_id_submission(run_file='job.pbs'):
 
 def extract_run_status(job_id):
     output = subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read()
-    print(job_id)
-    items=re.findall(job_id+".*$",output,re.MULTILINE)
+    print(job_id.type)
+    items=re.findall(str(job_id+".*$"),output,re.MULTILINE)
     if len(items) == 0:
         run_status = 'D'
     else:
