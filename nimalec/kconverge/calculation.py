@@ -67,10 +67,9 @@ class DFTParameters:
     def set_electrons(self):
         return self._electrons
 
-class RunFiles:
+class SCFRunFiles:
     def __init__(self, job_name, nodes, ppn, queue, email, project, walltime='00:20:00'):
-        self._run_parameters = {'job_name': job_name, 'nodes': nodes, 'ppn': ppn, 'queue', queue , 'email': email, 'project': project, 'walltime' walltime}
-
+        self._run_parameters = {'job_name': job_name, 'nodes': nodes, 'ppn': ppn, 'email': email, 'project': project, 'walltime':  walltime}
     def make_runscript(self, file_path):
         generate_run_script(self._run_parameters, file_path)
 
@@ -89,12 +88,25 @@ class SCFCalculation:
         self._calculation_parameters._control['outdir'] = './'
         self._calculation_parameters._control['wfcdir'] = './'
         self._calculation_parameters._control['__prefix__'] = '__prefix__'
-        self._calculation_parameters._control['startingwfc'] = 'atomic+random'
+        self._calculation_parameters._electrons['startingwfc'] = 'atomic+random'
+        self._calculation_parameters._electrons['diagonalization'] = 'david'
+        self._calculation_parameters._electrons['diago_david_ndim'] = 4
+        self._calculation_parameters._electrons['diago_full_acc'] = '.true.'
         self._structure = structure._structure
         self._scf_calculation = PWInput(self._structure, self._calculation_parameters._pseudo, self._calculation_parameters._control, self._calculation_parameters._system, self._calculation_parameters._electrons, kpoints_grid = self._kpoints_param['kpoints'], kpoints_shift=self._kpoints_param['kpoints_shift'])
 
     def return_params_dict(self):
-        return  self._scf_calculation.as_dict()
+        return self._scf_calculation.as_dict()
 
     def make_input_file(self, file_path):
         self._scf_calculation.write_file(file_path)
+
+class SCFCalculationWorkflow:
+    #def __init__(self):
+        ##Configures calculaiton...
+    #def make_work_dir(self):
+    #def run_calculation(self):
+    #def extract_total_energy(self):
+    #def check_run_status(self):
+    #def extract_stress_tensor(self):
+    #def 
