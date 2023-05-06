@@ -19,7 +19,7 @@ mpirun -np $PBS_NP pw.x -in pw.in > pw.out
     with open(file_path, 'w') as f:
         f.write(runscript_text)
 
-def extract_job_id_submission(run_file):
+def extract_job_id_submission(run_file='job.pbs'):
     output = subprocess.Popen("qsub "+run_file, shell=True, stdout=subprocess.PIPE).stdout.read()
     return output[0:5]
 

@@ -40,34 +40,5 @@ class Kconverge:
         self._plot = plot
         self._work_dir = None
 
-    def get_calculation_parameters(self):
-        return 1
-
-    def set_calculation_parameters(self):
-        return 1
-
-    def get_run_info(self):
-        return 1
-
-    def set_run_info(self):
-        return 1
-
-    def get_run_info(self):
-        return 1
-
-    def get_workflow_type(self):
-        return 1
-
-    def get_convergence_property(self):
-        return 1
-
-   def get_symmetry(self):
-
-   def set_symmetry(self):
-
-   def run_convergence_test(self):
-       ## Should make a python file to run in the background (test this method first).
-       ## should run in the background 'nohup python ' in background.
-       ## Check continuously for run status ==>
-
-   def kill_convergence_test(self):
+    def configure_run_convergence_calculations(self):
+        while
