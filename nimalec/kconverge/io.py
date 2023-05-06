@@ -1,7 +1,7 @@
 import subprocess
 import re
 
-import os 
+import os
 from os.path import exists
 
 def generate_run_script(run_parameters, file_path):
@@ -27,7 +27,6 @@ def extract_job_id_submission(run_file='job.pbs'):
 
 def extract_run_status(job_id):
     output = str(subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read())
-    print(type(output))
     out = str(job_id+".*$")
     items=re.findall(out,output,re.MULTILINE)
     if len(items) == 0:
@@ -37,5 +36,5 @@ def extract_run_status(job_id):
     return run_status
 
 def check_scf_out(directory):
-    outfile = exists(os.path.join(directory), 'scf.out')
+    outfile = exists(os.path.join(directory, 'scf.out'))
     return outfile
