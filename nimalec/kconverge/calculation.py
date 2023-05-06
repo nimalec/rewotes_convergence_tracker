@@ -138,4 +138,4 @@ class SCFCalculationWorkflow:
     def setup_work_dir_run(self):
         self.setup_work_dir()
         self.run_calculation()
-        #self.update_run_status() 
+        self.update_run_status() 
