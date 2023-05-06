@@ -1,8 +1,9 @@
 from pymatgen.core.structure import Structure
 from pymatgen.io.pwscf import PWInput
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
+import os
 
-from kconverge.io import generate_run_script
+from kconverge.io import *
 
 class Material:
     def __init__(self, name, lattice, atoms, positions):
@@ -73,6 +74,9 @@ class SCFRunFiles:
     def make_runscript(self, file_path):
         generate_run_script(self._run_parameters, file_path)
 
+# class JobStatus:
+#     def __init__(self):
+#         self._job_id =
 
 class SCFCalculation:
     def __init__(self, calculation_parameters, structure, kpoints, kpoints_shift=(0,0,0)):
@@ -102,11 +106,35 @@ class SCFCalculation:
         self._scf_calculation.write_file(file_path)
 
 class SCFCalculationWorkflow:
-    #def __init__(self):
-        ##Configures calculaiton...
-    #def make_work_dir(self):
-    #def run_calculation(self):
-    #def extract_total_energy(self):
-    #def check_run_status(self):
-    #def extract_stress_tensor(self):
-    #def 
+    def __init__(self, work_dir, calculation_parameters, structure, kpoints, job_name, nodes, ppn, queue, email, project, walltime='00:20:00', kpoints_shift=(0,0,0)):
+        self._scf_calculation = SCFCalculation(calculation_parameters, structure, kpoints, kpoints_shift)
+        self._run_script = SCFRunFiles(job_name, nodes, ppn, queue, email, project, walltime='00:20:00')
+        self._work_dir = work_dir
+        self._run_status = {'run_status': 'P', 'job_id': None, 'job_name': job_name, 'email': email}
+
+    def setup_work_dir(self):
+        os.mkdir(self._work_dir)
+        runscript_path = os.path.join(self._work_dir, 'job.pbs')
+        infile_path = os.path.join(self._work_dir, 'scf.in')
+        self._run_script.make_runscript(runscript_path)
+        self._scf_calculation.make_input_file(infile_path)
+
+    def run_calculation(self):
+        os.chdir(self._work_dir)
+        job_id = extract_job_id_submission(run_file='job.pbs')
+        self._run_status['job_id'] = job_id
+
+    def update_run_status(self):
+        queue_status = extract_run_status(self._run_status['job_id'])
+        pw_out_status = check_scf_out(self._work_dir)
+        if pw_out_status is True and queue_status == 'D':
+            self._run_status['run_status'] = 'D'
+        elif pw_out_status is False and queue_status == 'D':
+            self._run_status['run_status'] = 'P'
+        else:
+            self._run_status['run_status'] = queue_status
+        return self._run_status['run_status']
+
+    def setup_work_dir_run(self):
+        self.setup_work_dir()
+        self.run_calculation()
