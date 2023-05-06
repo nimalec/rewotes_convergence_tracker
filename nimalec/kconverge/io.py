@@ -21,7 +21,7 @@ mpirun -np $PBS_NP pw.x -in pw.in > pw.out
 
 def extract_job_id_submission(run_file='job.pbs'):
     output = subprocess.Popen("qsub "+run_file, shell=True, stdout=subprocess.PIPE).stdout.read()
-    return output[0:5]
+    return str(int(output[0:5])) 
 
 def extract_run_status(job_id):
     output = subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read()
