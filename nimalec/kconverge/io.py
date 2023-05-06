@@ -24,8 +24,7 @@ def extract_job_id_submission(run_file='job.pbs'):
     return str(int(output[0:5]))
 
 def extract_run_status(job_id):
-    output = subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read()
-    print(output)
+    output = str(subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read())
     print(type(output))
     out = str(job_id+".*$")
     items=re.findall(out,output,re.MULTILINE)
