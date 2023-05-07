@@ -117,9 +117,12 @@ class SCFCalculationWorkflow:
         self._scf_calculation.make_input_file(infile_path)
 
     def run_calculation(self):
+        cwd = os.getcwd()
         os.chdir(self._work_dir)
         job_id = extract_job_id_submission(run_file='job.pbs')
         self._run_status['job_id'] = job_id
+        os.chdir(cwd)
+
 
     def update_run_status(self):
         queue_status = extract_run_status(self._run_status['job_id'])
