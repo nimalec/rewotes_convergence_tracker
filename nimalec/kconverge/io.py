@@ -4,7 +4,7 @@ import re
 import os
 from os.path import exists
 
-from pymatgen.io.pwfscf import PWOutput
+from pymatgen.io.pwscf import PWOutput
 
 def generate_run_script(run_parameters, file_path):
     runscript_text =  f'''#!/bin/bash\n
