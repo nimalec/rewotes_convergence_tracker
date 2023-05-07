@@ -42,7 +42,7 @@ class Kconverge:
         while status_k_0 == False and status_k_1 == False:
             status_k_0 = workdir_initial_0.update_done_status()
             status_k_1 = workdir_initial_1.update_done_status()
-            crash_k_0 = workdir_initial_0..update_crash_status()
+            crash_k_0 = workdir_initial_0.update_crash_status()
             crash_k_1 = workdir_initial_1.update_crash_status()
             if crash_k_0 == True or crash_k_1 == True:
                 break
