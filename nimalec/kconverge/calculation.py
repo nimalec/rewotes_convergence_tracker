@@ -91,7 +91,7 @@ class SCFCalculation:
         self._calculation_parameters._control['tprnfor'] = '.true.'
         self._calculation_parameters._control['outdir'] = './'
         self._calculation_parameters._control['wfcdir'] = './'
-        self._calculation_parameters._control['__prefix__'] = '__prefix__'
+        self._calculation_parameters._control['prefix'] = '__prefix__'
         self._calculation_parameters._electrons['startingwfc'] = 'atomic+random'
         self._calculation_parameters._electrons['diagonalization'] = 'david'
         self._calculation_parameters._electrons['diago_david_ndim'] = 4
@@ -138,4 +138,4 @@ class SCFCalculationWorkflow:
     def setup_work_dir_run(self):
         self.setup_work_dir()
         self.run_calculation()
-        self.update_run_status() 
+        self.update_run_status()
