@@ -38,3 +38,24 @@ def extract_run_status(job_id):
 def check_scf_out(directory):
     outfile = exists(os.path.join(directory, 'scf.out'))
     return outfile
+
+def check_job_done(directory):
+    file_path = os.path.join(directory, 'scf.out')
+    outfile = exists(file_path)
+    if outfile == True:
+        if 'JOB DONE.' in open(filepath).read():
+            status = True
+        else:
+            status = False
+    else:
+        status = False
+    return status
+
+def check_crash(directory):
+    file_path = os.path.join(directory, 'CRASH')
+    outfile = exists(file_path)
+    if outfile == True:
+        status = True
+    else:
+        status = False
+    return status  

@@ -15,7 +15,7 @@ kpoints = (2,2,2)
 dft_params = DFTParameters(pseudos, control, system, electrons)
 
 workflow = SCFCalculationWorkflow('./test', dft_params, material_structure, kpoints, job_name='scf1', nodes=1, ppn=1,queue='qe' ,email='nl475@cornell.edu', project='nleclerc97')
-workflow.setup_work_dir()
+workflow.setup_work_dir_run()
 # dft_calc = SCFCalculation(dft_params, material_structure, kpoints)
 # dft_calc.make_input_file('scf2.in')
 #

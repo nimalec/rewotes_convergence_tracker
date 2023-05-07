@@ -74,9 +74,6 @@ class SCFRunFiles:
     def make_runscript(self, file_path):
         generate_run_script(self._run_parameters, file_path)
 
-# class JobStatus:
-#     def __init__(self):
-#         self._job_id =
 
 class SCFCalculation:
     def __init__(self, calculation_parameters, structure, kpoints, kpoints_shift=(0,0,0)):
@@ -110,7 +107,7 @@ class SCFCalculationWorkflow:
         self._scf_calculation = SCFCalculation(calculation_parameters, structure, kpoints, kpoints_shift)
         self._run_script = SCFRunFiles(job_name, nodes, ppn, queue, email, project, walltime='00:20:00')
         self._work_dir = work_dir
-        self._run_status = {'run_status': 'P', 'job_id': None, 'job_name': job_name, 'email': email}
+        self._run_status = {'run_status': 'P', 'job_id': None, 'job_name': job_name, 'email': email, 'done':  False, 'crash': False}
 
     def setup_work_dir(self):
         os.mkdir(self._work_dir)
@@ -134,6 +131,14 @@ class SCFCalculationWorkflow:
         else:
             self._run_status['run_status'] = queue_status
         return self._run_status['run_status']
+
+    def update_done_status(self):
+        self._run_status['done'] = check_job_done(self._work_dir)
+        return self._run_status['done']
+
+    def update_crash_status(self):
+        self._run_status['crash'] = check_crash(self._work_dir)
+        return self._run_status['crash']
 
     def setup_work_dir_run(self):
         self.setup_work_dir()

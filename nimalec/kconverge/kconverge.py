@@ -19,26 +19,39 @@ class Kconverge:
     - - - - - - -
 
     """
-    def __init__(self, template_input_file, template_run_script, convergence_parameter, convergence_threshold, plot=True):
-        ##Note ==> - template_input_file only provides input parameters
-        ##          -template run_script ==> proivdes info necessary to run a calculation
-        ## convergence_parameter ==> depending on calculation type, will determine an appropriate workflow to set up calculation
-        ## convergence threshodl ==> depends on calculation type
-        ##Assumes a pre-relaxed structure
-        ## convergence parameters: phonon frequency, bands [scalar, vector, tensor]
-        ## total energy
-        ## total stress
-        ## element of stress tensor
-        ## phonon frequency (at q=0) and provided n
-        ## band (at gamma) and provided n
-        self._calculation_parameters = None
-        self._input_structure = None
-        self._run_information = None
-        self._workflow = None
-        self._kpoint_list = None
-        self._convergence_threshold = None
-        self._plot = plot
-        self._work_dir = None
+    def __init__(self, threshold, work_dir, scf_parameters, material, nodes=1, ppn=1, queue='qe', email='nl475@cornell.edu', project='nleclerc97-external'):
+        self._work_dir = work_dir
+        self._run_parameters = {'nodes': nodes, 'ppn': ppn, 'queue': queue, 'email': email, 'project': project}
+        self._scf_parameters = scf_parameters
+        self._material_structure = material
+        self._threshold = threshold
 
     def configure_run_convergence_calculations(self):
-        while
+        os.mkdir(self._work_dir)
+        os.chdir(self._work_dir)
+
+        ##Initialize k-point mesh for first two poitns to extract dE
+        kmesh_initial_0 = (1,1,1)
+        kmesh_initial_1 = (2,2,2)
+        workdir_initial_0 = os.path.join(self._work_dir, 'scf_k_1')
+        workdir_initial_1 = os.path.join(self._work_dir, 'scf_k_2')
+        workflow_initial_0 = SCFCalculationWorkflow(workdir_initial_0, self._scf_parameters, self._material_structure, kmesh_initial_0, job_name='scf_k_1', nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
+        workflow_initial_0.setup_work_dir_run()
+        workflow_initial_1 = SCFCalculationWorkflow(workdir_initial_1, self._scf_parameters, self._material_structure, kmesh_initial_1, job_name='scf_k_2', nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
+        workflow_initial_1.setup_work_dir_run()
+
+        status_k_0 = workdir_initial_0.update_done_status()
+        status_k_1 = workdir_initial_1.update_done_status()
+
+        while status_k_0 == False and status_k_1 == False:
+            status_k_0 = workdir_initial_0.update_done_status()
+            status_k_1 = workdir_initial_1.update_done_status()
+            crash_k_0 = status_k_0.update_crash_status()
+            crash_k_1 = status_k_1.update_crash_status()
+            if crash_k_0 == True or crash_k_1 == True:
+                break
+            else:
+                continue
+        f = open(os.path.join(self._work_dir, "out.txt"), "w")
+        f.write("Woops! I have deleted the content!")
+        f.close()
