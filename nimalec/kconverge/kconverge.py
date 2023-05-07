@@ -49,6 +49,7 @@ class Kconverge:
             crash_k_0 = workflow_initial_0.update_crash_status()
             crash_k_1 = workflow_initial_1.update_crash_status()
             if crash_k_0 == True or crash_k_1 == True:
+                print('Calculation failed, see CRASH file for job in scf_k_1 or scf_k_2!!')
                 break
             else:
                 continue
@@ -60,12 +61,12 @@ class Kconverge:
         f.write(str(dE_0))
         f.close()
 
-        if dE_0 < self._threshold:
+        if abs(dE_0) > abs(self._threshold):
             ##Start a while loop ...
             E_last = E_1
             dE = dE_0
             k_val = 3
-            while dE < threshold:
+            while dE < self._threshold:
                 k_mesh = (k_val, k_val, k_val)
                 work_dir = os.path.join(self._work_dir, 'scf_k_'+str(k_val))
                 k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
@@ -74,12 +75,15 @@ class Kconverge:
                 while done_status == False:
                     done_status = k_workflow.done_status()
                     crash_status =  k_workflow.update_crash_status()
-        #             if crash_status == True:
-        #                 break
-        #             else:
-        #                 continue
-        #         dE = k_workflow.get_total_energy() - E_last
-        #         E_last =  k_workflow.get_total_energy()
+                    if crash_status == True:
+                        print('Calculation failed, see CRASH file for job in scf_k_'+str(k_val))
+                        break
+                    else:
+                        continue
+                dE = k_workflow.get_total_energy() - E_last
+                E_last =  k_workflow.get_total_energy()
+                k_val += 1
+                print(k_val, dE)
         # else:
         #     pass
         # k_optimal = k_val
