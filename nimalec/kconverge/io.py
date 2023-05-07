@@ -43,7 +43,7 @@ def check_job_done(directory):
     file_path = os.path.join(directory, 'scf.out')
     outfile = exists(file_path)
     if outfile == True:
-        if 'JOB DONE.' in open(filepath).read():
+        if 'JOB DONE.' in open(filepath).read() and 'convergence has been achieved in' in open(filepath).read():
             status = True
         else:
             status = False
@@ -58,4 +58,4 @@ def check_crash(directory):
         status = True
     else:
         status = False
-    return status  
+    return status
