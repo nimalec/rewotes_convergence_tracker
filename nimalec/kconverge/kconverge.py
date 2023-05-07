@@ -28,7 +28,7 @@ class Kconverge:
 
     def configure_run_convergence_calculations(self):
         os.mkdir(self._work_dir)
-        os.chdir(self._work_dir)
+        #os.chdir(self._work_dir)
 
         ##Initialize k-point mesh for first two poitns to extract dE
         kmesh_initial_0 = (1,1,1)
