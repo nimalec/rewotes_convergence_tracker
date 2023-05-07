@@ -144,3 +144,6 @@ class SCFCalculationWorkflow:
         self.setup_work_dir()
         self.run_calculation()
         self.update_run_status()
+
+    def get_total_energy(self):
+        return get_total_energy(os.path.join(self._work_dir, 'scf.out'))
