@@ -16,7 +16,7 @@ def generate_run_script(run_parameters, file_path):
 #PBS -M {run_parameters['email']}
 #PBS -A {run_parameters['project']}\n
 module add espresso/540-i-174-impi-044
-mpirun -np $PBS_NP pw.x -in pw.in > pw.out
+mpirun -np $PBS_NP pw.x -in scf.in > scf.out
 '''
     with open(file_path, 'w') as f:
         f.write(runscript_text)
