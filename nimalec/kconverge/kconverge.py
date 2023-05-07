@@ -66,7 +66,7 @@ class Kconverge:
             E_last = E_1
             dE = dE_0
             k_val = 3
-            while dE < self._threshold:
+            while abs(dE) > abs(self._threshold):
                 k_mesh = (k_val, k_val, k_val)
                 work_dir = os.path.join(self._work_dir, 'scf_k_'+str(k_val))
                 k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
