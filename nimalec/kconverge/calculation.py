@@ -108,6 +108,7 @@ class SCFCalculationWorkflow:
         self._run_script = SCFRunFiles(job_name, nodes, ppn, queue, email, project, walltime='00:20:00')
         self._work_dir = work_dir
         self._run_status = {'run_status': 'P', 'job_id': None, 'job_name': job_name, 'email': email, 'done':  False, 'crash': False}
+        self._cwd = os.getcwd()
 
     def setup_work_dir(self):
         os.mkdir(self._work_dir)
@@ -117,11 +118,10 @@ class SCFCalculationWorkflow:
         self._scf_calculation.make_input_file(infile_path)
 
     def run_calculation(self):
-        cwd = os.getcwd()
         os.chdir(self._work_dir)
         job_id = extract_job_id_submission(run_file='job.pbs')
         self._run_status['job_id'] = job_id
-        os.chdir(cwd)
+        os.chdir(self._cwd)
 
 
     def update_run_status(self):
