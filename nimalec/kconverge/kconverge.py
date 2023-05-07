@@ -3,7 +3,7 @@ Determines optimal k-point mesh to achieve convergence in a DFT calculation.
 version of May 2023
 """
 class Kconverge:
-   """
+    """
     Class used to execute convergence test with respect to k-poin mesh for a calculation.
 
     Attributes
