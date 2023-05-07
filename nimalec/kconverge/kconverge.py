@@ -40,8 +40,8 @@ class Kconverge:
         workflow_initial_1 = SCFCalculationWorkflow(workdir_initial_1, self._scf_parameters, self._material_structure, kmesh_initial_1, job_name='scf_k_2', nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
         workflow_initial_1.setup_work_dir_run()
 
-        status_k_0 = workdir_initial_0.update_done_status()
-        status_k_1 = workdir_initial_1.update_done_status()
+        status_k_0 = workflow_initial_0.update_done_status()
+        status_k_1 = workflow_initial_1.update_done_status()
 
         while status_k_0 == False and status_k_1 == False:
             status_k_0 = workflow_initial_0.update_done_status()
