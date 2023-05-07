@@ -60,20 +60,20 @@ class Kconverge:
         f.write(str(dE_0))
         f.close()
 
-        # if dE_0 < self._threshold:
-        #     ##Start a while loop ...
-        #     E_last = E_1
-        #     dE = dE_0
-        #     k_val = 3
-        #     while dE < threshold:
-        #         k_mesh = (k_val, k_val, k_val)
-        #         work_dir = os.path.join(self._work_dir, 'scf_k_'+str(k_val))
-        #         k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
-        #         k_workflow.setup_work_dir_run()
-        #         done_status = False
-        #         while done_status == False:
-        #             done_status = k_workflow.done_status()
-        #             crash_status =  k_workflow.update_crash_status()
+        if dE_0 < self._threshold:
+            ##Start a while loop ...
+            E_last = E_1
+            dE = dE_0
+            k_val = 3
+            while dE < threshold:
+                k_mesh = (k_val, k_val, k_val)
+                work_dir = os.path.join(self._work_dir, 'scf_k_'+str(k_val))
+                k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
+                k_workflow.setup_work_dir_run()
+                done_status = False
+                while done_status == False:
+                    done_status = k_workflow.done_status()
+                    crash_status =  k_workflow.update_crash_status()
         #             if crash_status == True:
         #                 break
         #             else:
