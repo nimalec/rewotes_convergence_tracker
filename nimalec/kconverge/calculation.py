@@ -83,16 +83,16 @@ class SCFCalculation:
         self._calculation_parameters._control['title'] = ''
         self._calculation_parameters._control['verbosity'] = 'low'
         self._calculation_parameters._control['restart_mode'] = 'from_scratch'
-        self._calculation_parameters._control['wf_collect'] = '.true.'
-        self._calculation_parameters._control['tstress'] = '.true.'
-        self._calculation_parameters._control['tprnfor'] = '.true.'
+        self._calculation_parameters._control['wf_collect'] = True
+        self._calculation_parameters._control['tstress'] = True
+        self._calculation_parameters._control['tprnfor'] = True
         self._calculation_parameters._control['outdir'] = './'
         self._calculation_parameters._control['wfcdir'] = './'
         self._calculation_parameters._control['prefix'] = '__prefix__'
         self._calculation_parameters._electrons['startingwfc'] = 'atomic+random'
         self._calculation_parameters._electrons['diagonalization'] = 'david'
         self._calculation_parameters._electrons['diago_david_ndim'] = 4
-        self._calculation_parameters._electrons['diago_full_acc'] = '.true.'
+        self._calculation_parameters._electrons['diago_full_acc'] = True
         self._structure = structure._structure
         self._scf_calculation = PWInput(self._structure, self._calculation_parameters._pseudo, self._calculation_parameters._control, self._calculation_parameters._system, self._calculation_parameters._electrons, kpoints_grid = self._kpoints_param['kpoints'], kpoints_shift=self._kpoints_param['kpoints_shift'])
 

@@ -4,6 +4,8 @@ import re
 import os
 from os.path import exists
 
+from pymatgen.io.pwfscf import PWOutput
+
 def generate_run_script(run_parameters, file_path):
     runscript_text =  f'''#!/bin/bash\n
 #PBS -N {run_parameters['job_name']}
@@ -59,3 +61,7 @@ def check_crash(directory):
     else:
         status = False
     return status
+
+def get_total_energy(file):
+    pw_out = PWOutput(file)
+    return pw_out.final_energy()

@@ -81,4 +81,4 @@ class Kconverge:
                 E_last =  k_workflow.get_total_energy()
         else:
             pass
-        k_optimal = k_val   
+        k_optimal = k_val
