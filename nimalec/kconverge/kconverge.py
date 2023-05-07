@@ -73,7 +73,7 @@ class Kconverge:
                 k_workflow.setup_work_dir_run()
                 done_status = False
                 while done_status == False:
-                    done_status = k_workflow.done_status()
+                    done_status = k_workflow.update_done_status()
                     crash_status =  k_workflow.update_crash_status()
                     if crash_status == True:
                         print('Calculation failed, see CRASH file for job in scf_k_'+str(k_val))
