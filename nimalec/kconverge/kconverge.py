@@ -53,8 +53,8 @@ class Kconverge:
             else:
                 continue
 
-        E_0 = workflow_initial_1.get_total_energy()
-        E_1 = workflow_initial_2.get_total_energy()
+        E_0 = workflow_initial_0.get_total_energy()
+        E_1 = workflow_initial_1.get_total_energy()
         dE_0 = E_1-E_0
         f = open(os.path.join(self._work_dir, "out.txt"), "w")
         f.write(str(dE_0))
