@@ -60,7 +60,7 @@ class Kconverge:
         k_values = []
         dE_values = []
         k_values.append(2)
-        dE_values.append(abs(dE_0)
+        dE_values.append(abs(dE_0))
         np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array([k_values, dE_values]), delimiter=",")
 
         if abs(dE_0) > abs(self._threshold):
