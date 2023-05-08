@@ -63,6 +63,5 @@ def check_crash(directory):
     return status
 
 def get_total_energy(file):
-    print(os.getcwd())
     pw_out = PWOutput(file)
     return pw_out.final_energy

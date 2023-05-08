@@ -3,6 +3,7 @@ Determines optimal k-point mesh to achieve convergence in a DFT calculation.
 version of May 2023
 """
 import os
+import numpy as np
 
 from kconverge.calculation import *
 
@@ -57,12 +58,14 @@ class Kconverge:
         E_0 = workflow_initial_0.get_total_energy()
         E_1 = workflow_initial_1.get_total_energy()
         dE_0 = E_1-E_0
-        f = open(os.path.join(self._work_dir, "out.txt"), "w")
-        f.write(str(dE_0))
-        f.close()
+
+        k_values = []
+        dE_values = []
+        k_values.append(2)
+        dE_values.append(dE_0)
+        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",")
 
         if abs(dE_0) > abs(self._threshold):
-            ##Start a while loop ...
             E_last = E_1
             dE = dE_0
             k_val = 3
@@ -82,8 +85,12 @@ class Kconverge:
                         continue
                 dE = k_workflow.get_total_energy() - E_last
                 E_last =  k_workflow.get_total_energy()
+                k_values.append(k_val)
+                dE_values.append(dE)
+                np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",")
                 k_val += 1
-                print(k_val, dE)
-        # else:
-        #     pass
-        # k_optimal = k_val
+        else:
+            pass
+
+        print('Optimal k mesh value is: '+str(k_val)+' with convergence '+str(dE))
+        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",", header='Optimal for convergecne achived with a '+str(k_val-1)+'x'+str(k_val-1)+'x'str(k_val-1)+' mesh at convergence of '+str(dE)+' Ry')
