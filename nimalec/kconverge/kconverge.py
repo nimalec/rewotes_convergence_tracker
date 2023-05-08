@@ -29,9 +29,6 @@ class Kconverge:
 
     def configure_run_convergence_calculations(self):
         os.mkdir(self._work_dir)
-        #os.chdir(self._work_dir)
-
-        ##Initialize k-point mesh for first two poitns to extract dE
         kmesh_initial_0 = (1,1,1)
         kmesh_initial_1 = (2,2,2)
         workdir_initial_0 = os.path.join(self._work_dir, 'scf_k_1')
@@ -63,7 +60,7 @@ class Kconverge:
         dE_values = []
         k_values.append(2)
         dE_values.append(dE_0)
-        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",")
+        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array([k_values, dE_values]), delimiter=",")
 
         if abs(dE_0) > abs(self._threshold):
             E_last = E_1
