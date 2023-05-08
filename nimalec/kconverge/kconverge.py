@@ -69,21 +69,21 @@ class Kconverge:
             k_val = 3
             while abs(dE) > abs(self._threshold):
                 k_mesh = (k_val, k_val, k_val)
-                work_dir = os.path.join(self._work_dir, 'scf_k_'+str(k_val))
-                k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'],queue=self._run_parameters['queue'] ,email=self._run_parameters['email'], project=self._run_parameters['project'])
+                work_dir = os.path.join(self._work_dir, 'scf_k_'+str(int(k_val)))
+                k_workflow = SCFCalculationWorkflow(work_dir, self._scf_parameters, self._material_structure, k_mesh, job_name='scf_k_'+str(k_val), nodes=self._run_parameters['nodes'], ppn=self._run_parameters['ppn'], queue=self._run_parameters['queue'], email=self._run_parameters['email'], project=self._run_parameters['project'])
                 k_workflow.setup_work_dir_run()
                 done_status = False
                 while done_status == False:
                     done_status = k_workflow.update_done_status()
                     crash_status =  k_workflow.update_crash_status()
                     if crash_status == True:
-                        print('Calculation failed, see CRASH file for job in scf_k_'+str(k_val))
+                        print('Calculation failed, see CRASH file for job in scf_k_'+str(int(k_val)))
                         break
                     else:
                         continue
                 dE = k_workflow.get_total_energy() - E_last
                 E_last =  k_workflow.get_total_energy()
-                k_values.append(k_val)
+                k_values.append(int(k_val))
                 dE_values.append(abs(dE))
                 np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array([k_values, dE_values]).T, delimiter=",")
                 k_val += 1
