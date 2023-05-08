@@ -1,3 +1,8 @@
+"""Kconverge class
+Determines optimal k-point mesh to achieve convergence in a DFT calculation
+version of May 2023
+"""
+
 import subprocess
 import re
 

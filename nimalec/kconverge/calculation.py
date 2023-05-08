@@ -1,3 +1,8 @@
+"""Kconverge class
+Determines optimal k-point mesh to achieve convergence in a DFT calculation
+version of May 2023
+"""
+
 from pymatgen.core.structure import Structure
 from pymatgen.io.pwscf import PWInput
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
@@ -30,7 +35,7 @@ class Material:
 
     def get_structure(self):
         return self._structure
-
+        
     def get_sites(self):
         return self._structure.sites
 

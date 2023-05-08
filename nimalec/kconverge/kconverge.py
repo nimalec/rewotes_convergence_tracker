@@ -1,15 +1,16 @@
 """Kconverge class
-Determines optimal k-point mesh to achieve convergence in a DFT calculation.
+Determines optimal k-point mesh to achieve convergence in a DFT calculation
 version of May 2023
 """
 import os
 import numpy as np
+import pandas as pd
 
 from kconverge.calculation import *
 
 class Kconverge:
     """
-    Class used to execute convergence test with respect to k-poin mesh for a calculation.
+    Class used to execute convergence test with respect to k-point mesh for a calculation.
 
     Attributes
     - - - - - - -
@@ -59,7 +60,7 @@ class Kconverge:
         k_values = []
         dE_values = []
         k_values.append(2)
-        dE_values.append(dE_0)
+        dE_values.append(abs(dE_0)
         np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array([k_values, dE_values]), delimiter=",")
 
         if abs(dE_0) > abs(self._threshold):
@@ -83,8 +84,8 @@ class Kconverge:
                 dE = k_workflow.get_total_energy() - E_last
                 E_last =  k_workflow.get_total_energy()
                 k_values.append(k_val)
-                dE_values.append(dE)
-                np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",")
+                dE_values.append(abs(dE))
+                np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array([k_values, dE_values]), delimiter=",")
                 k_val += 1
         else:
             pass
