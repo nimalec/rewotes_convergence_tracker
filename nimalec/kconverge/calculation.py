@@ -35,7 +35,7 @@ class Material:
 
     def get_structure(self):
         return self._structure
-        
+
     def get_sites(self):
         return self._structure.sites
 
@@ -127,7 +127,6 @@ class SCFCalculationWorkflow:
         job_id = extract_job_id_submission(run_file='job.pbs')
         self._run_status['job_id'] = job_id
         os.chdir(self._cwd)
-
 
     def update_run_status(self):
         queue_status = extract_run_status(self._run_status['job_id'])
