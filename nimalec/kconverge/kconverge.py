@@ -93,4 +93,4 @@ class Kconverge:
             pass
 
         print('Optimal k mesh value is: '+str(k_val)+' with convergence '+str(dE))
-        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",", header='Optimal for convergecne achived with a '+str(k_val-1)+'x'+str(k_val-1)+'x'str(k_val-1)+' mesh at convergence of '+str(dE)+' Ry')
+        np.savetxt(os.path.join(self._work_dir, "kconverge_out.txt"), np.array(k_values, dE_values), delimiter=",", header='Optimal for convergecne achived with a '+str(k_val-1)+'x'+str(k_val-1)+'x'+str(k_val-1)+' mesh at convergence of '+str(dE)+' Ry')
