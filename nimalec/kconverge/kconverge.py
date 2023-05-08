@@ -9,13 +9,13 @@ import pandas as pd
 from kconverge.calculation import *
 
 class Kconverge:
-    """
+     """
     Class used to execute convergence test with respect to k-point mesh for a calculation.
 
     Attributes
     - - - - - - -
-    _calculation_parameters : 'dict'
-        Dictionary of the parameters extracted from the input file used for DFT calculations in convergence tests.
+    _work_dir : 'dict'
+
 
     Methods
     - - - - - - -

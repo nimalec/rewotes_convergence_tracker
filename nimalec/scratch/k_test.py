@@ -2,7 +2,7 @@ from kconverge.kconverge import Kconverge
 from kconverge.calculation import DFTParameters, Material
 
 
-threshold =  7.3498810939358E-7 ## threshold dE in Ry
+threshold =  7.3498810939358E-6 ## threshold dE in Ry
 work_dir = './ktest_converge'
 
 ##SCF Parameters
