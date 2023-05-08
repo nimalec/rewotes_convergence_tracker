@@ -9,7 +9,7 @@ import pandas as pd
 from kconverge.calculation import *
 
 class Kconverge:
-     """
+    """
     Class used to execute convergence test with respect to k-point mesh for a calculation.
 
     Attributes
