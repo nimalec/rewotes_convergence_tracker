@@ -8,7 +8,7 @@ work_dir = './ktest_converge'
 
 ##SCF Parameters
 control = {'pseudo_dir': '../../../pseudo'}
-pseudos = {'Mg': 'ge_pbe_gbrv_1.0.upf', 'S': ''}
+pseudos = {'Mg': 'mg_pbe_gbrv_1.4.upf', 'S': 's_pbe_gbrv_1.4.upf'}
 system = {'ecutwfc': 40, 'occupations': 'smearing', 'degauss': 0.005}
 electrons = {'mixing_beta': 0.3}
 scf_parameters = DFTParameters(pseudos, control, system, electrons)
