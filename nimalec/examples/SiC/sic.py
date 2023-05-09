@@ -7,7 +7,7 @@ threshold =  7.3498810939358E-4 ## threshold dE in Ry
 work_dir = './ktest_converge'
 
 ##SCF Parameters
-control = {'pseudo_dir': '../../../pseudo'}
+control = {'pseudo_dir': '../../pseudos'}
 pseudos = {'Si': 'si_pbe_gbrv_1.0.upf', 'C':  'c_pbe_gbrv_1.2.upf'}
 system = {'ecutwfc': 40, 'occupations': 'smearing', 'degauss': 0.005}
 electrons = {'mixing_beta': 0.3}
