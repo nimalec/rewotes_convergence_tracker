@@ -14,8 +14,16 @@ class Kconverge:
 
     Attributes
     - - - - - - -
-    _work_dir : 'dict'
-
+    _work_dir : 'str'
+        Work directory for calculation.
+    _run_parametes : 'dict'
+        Directory of run settings with parametes: 'nodes', 'ppn', 'queue', 'email', project.
+    _scf_parameters : 'object kconverge.calculation.DFTParameters'
+        Instance of DFTParameters object describing parameters for the DFT calculation.
+    _material_structure : 'object kconverge.calculation.Material'
+        Instance Material object consisting of structure information.
+    _threshold : 'float'
+        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value. 
 
     Methods
     - - - - - - -
