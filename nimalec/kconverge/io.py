@@ -1,5 +1,5 @@
-"""Kconverge class
-Determines optimal k-point mesh to achieve convergence in a DFT calculation
+"""Input-output helper functions.
+Helper functions used as sub-routines within the Kconverge class.
 version of May 2023
 """
 
@@ -12,6 +12,12 @@ from os.path import exists
 from pymatgen.io.pwscf import PWOutput
 
 def generate_run_script(run_parameters, file_path):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     runscript_text =  f'''#!/bin/bash\n
 #PBS -N {run_parameters['job_name']}
 #PBS -j oe
@@ -29,10 +35,22 @@ mpirun -np $PBS_NP pw.x -in scf.in > scf.out
         f.write(runscript_text)
 
 def extract_job_id_submission(run_file='job.pbs'):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     output = subprocess.Popen("qsub "+run_file, shell=True, stdout=subprocess.PIPE).stdout.read()
     return str(int(output[0:5]))
 
 def extract_run_status(job_id):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     output = str(subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read())
     out = str(job_id+".*$")
     items=re.findall(out,output,re.MULTILINE)
@@ -43,10 +61,22 @@ def extract_run_status(job_id):
     return run_status
 
 def check_scf_out(directory):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     outfile = exists(os.path.join(directory, 'scf.out'))
     return outfile
 
 def check_job_done(directory):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     file_path = os.path.join(directory, 'scf.out')
     outfile = exists(file_path)
     if outfile == True:
@@ -59,6 +89,12 @@ def check_job_done(directory):
     return status
 
 def check_crash(directory):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     file_path = os.path.join(directory, 'CRASH')
     outfile = exists(file_path)
     if outfile == True:
@@ -68,5 +104,11 @@ def check_crash(directory):
     return status
 
 def get_total_energy(file):
+    """
+    Configures calculations and sets up appropriate directories.
+    Parameters:
+        None.
+
+    """
     pw_out = PWOutput(file)
     return pw_out.final_energy

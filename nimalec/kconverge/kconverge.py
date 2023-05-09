@@ -23,13 +23,32 @@ class Kconverge:
     _material_structure : 'object kconverge.calculation.Material'
         Instance Material object consisting of structure information.
     _threshold : 'float'
-        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value. 
-
-    Methods
-    - - - - - - -
+        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value.
 
     """
     def __init__(self, threshold, work_dir, scf_parameters, material, nodes=1, ppn=1, queue='qe', email='nl475@cornell.edu', project='nleclerc97-external'):
+        """
+        Constructor method for Kconverge object.
+        Parameters:
+            threshold : 'float'
+                Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value.
+            work_dir : 'str'
+                Work directory for calculation.
+            scf_parameters : 'dict'
+                Instance of DFTParameters object describing parameters for the DFT calculation.
+            material : 'object kconverge.calculation.Material'
+                Instance Material object consisting of structure information.
+            nodes : 'int'
+                Number of nodes to use per calculation.
+            ppn : 'int'
+                Number of processecors per node for calculation.
+            queue : 'str'
+                Queue setting used.
+            email : 'str'
+                Email used for calculation updates.
+            project : 'str'
+                Name of associated project.
+        """
         self._work_dir = work_dir
         self._run_parameters = {'nodes': nodes, 'ppn': ppn, 'queue': queue, 'email': email, 'project': project}
         self._scf_parameters = scf_parameters
@@ -37,6 +56,12 @@ class Kconverge:
         self._threshold = threshold
 
     def configure_run_convergence_calculations(self):
+        """
+        Configures calculations and sets up appropriate directories.
+        Parameters:
+            None.
+
+        """
         os.mkdir(self._work_dir)
         kmesh_initial_0 = (1,1,1)
         kmesh_initial_1 = (2,2,2)
