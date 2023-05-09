@@ -149,64 +149,69 @@ class DFTParameters:
 
 class SCFRunFiles:
     """
-    Class used to store parameters for run file.  
+    Class used to manage settings and file generation for run files on the Matr3a cluster.
 
     Attributes
     - - - - - - -
-    _work_dir : 'str'
-        Work directory for calculation.
-    _run_parametes : 'dict'
-        Directory of run settings with parametes: 'nodes', 'ppn', 'queue', 'email', project.
-    _scf_parameters : 'object kconverge.calculation.DFTParameters'
-        Instance of DFTParameters object describing parameters for the DFT calculation.
-    _material_structure : 'object kconverge.calculation.Material'
-        Instance Material object consisting of structure information.
-    _threshold : 'float'
-        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value.
+    _run_parameters : 'dict'
+        Dict. of run parameters to keep track of during run: {'job_name', 'nodes', 'ppn', 'email', 'project', 'walltime'}
 
     """
     def __init__(self, job_name, nodes, ppn, queue, email, project, walltime='00:20:00'):
         """
-        Configures calculations and sets up appropriate directories.
+        Configures run settings.
         Parameters:
-            None.
-
+          job_name : 'str'
+             Name of job.
+          nodes : 'int'
+             Number of nodes used in run.
+          ppn : 'int'
+             Number of processors per node used in run.
+          queue : 'str'
+             Type of queue setting.
+          email : 'str'
+             Email used to forward run info.
+          project : 'str'
+             Project name.
+          Walltime : 'str'
+             Walltime for run to finish.
         """
         self._run_parameters = {'job_name': job_name, 'nodes': nodes, 'ppn': ppn, 'email': email, 'project': project, 'walltime':  walltime}
+
     def make_runscript(self, file_path):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Genertes a run script provided the file path.
         """
         generate_run_script(self._run_parameters, file_path)
 
 
 class SCFCalculation:
     """
-    Class used to execute convergence test with respect to k-point mesh for a calculation.
+    Class used to configure SCF calculation in QE.
 
     Attributes
     - - - - - - -
-    _work_dir : 'str'
-        Work directory for calculation.
-    _run_parametes : 'dict'
-        Directory of run settings with parametes: 'nodes', 'ppn', 'queue', 'email', project.
-    _scf_parameters : 'object kconverge.calculation.DFTParameters'
-        Instance of DFTParameters object describing parameters for the DFT calculation.
-    _material_structure : 'object kconverge.calculation.Material'
-        Instance Material object consisting of structure information.
-    _threshold : 'float'
-        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value.
-
+    _kpoints_param : 'dict'
+        Dictionary used to keep track of kpoints and k shift.
+    _calculation_parameters : 'kconverge.calculation.DFTParameters'
+        Instance of DFTParameters used to configure SCF variables.
+    _structure : 'kconverge.calculation.Material'
+        Instance of Material object defining structure and composition of material.
+    _scf_calculation : 'pymatgen.io.pwscf.PWInput'
+        Instance of PWInput scf calculation parameters from Pymatgen.
     """
     def __init__(self, calculation_parameters, structure, kpoints, kpoints_shift=(0,0,0)):
         """
         Configures calculations and sets up appropriate directories.
         Parameters:
-            None.
-
+            calculation_parameters : 'kconverge.calculation.DFTParameters'
+                Instance of DFTParameters used to configure SCF variables.
+            structure : 'kconverge.calculation.Material'
+                Instance of Material object defining structure and composition of material.
+            kpoints : 'tuple'
+                  3x1 tuple of k-point mesh density.
+            kpoints_shift : 'tuple'
+                3x1 tuple of k-point vector shift (used in phonon calculations).
         """
         self._kpoints_param = {'kpoints': kpoints, 'kpoints_shift': kpoints_shift}
         self._calculation_parameters = calculation_parameters
@@ -229,46 +234,36 @@ class SCFCalculation:
 
     def return_params_dict(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Returns parameters dict.
         """
         return self._scf_calculation.as_dict()
 
     def make_input_file(self, file_path):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Returns input file provided file_path.
         """
         self._scf_calculation.write_file(file_path)
 
 class SCFCalculationWorkflow:
     """
-    Class used to execute convergence test with respect to k-point mesh for a calculation.
+    Class used to configure and execute a SCF calculaiton with QE.
 
     Attributes
     - - - - - - -
+    _scf_calculation : 'kconverge.calculaiton.SCFCalculation'
+        Instance of class used to configure SCF calculation.
+    _run_script : 'kconverge.calculaiton.SCFRunFiles'
+        Instance of class for running SCF parameters.
     _work_dir : 'str'
         Work directory for calculation.
-    _run_parametes : 'dict'
-        Directory of run settings with parametes: 'nodes', 'ppn', 'queue', 'email', project.
-    _scf_parameters : 'object kconverge.calculation.DFTParameters'
-        Instance of DFTParameters object describing parameters for the DFT calculation.
-    _material_structure : 'object kconverge.calculation.Material'
-        Instance Material object consisting of structure information.
-    _threshold : 'float'
-        Convergence threshold on energy in Ry. Program returns k-point density when difference in energy between 2 adjacent k-points is <= this value.
-
+    _run_status : 'str'
+        Dict. of parameters describing run status.
+    _cwd : 'str'
+       Current working directory.
     """
     def __init__(self, work_dir, calculation_parameters, structure, kpoints, job_name, nodes, ppn, queue, email, project, walltime='00:20:00', kpoints_shift=(0,0,0)):
         """
         Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
         """
         self._scf_calculation = SCFCalculation(calculation_parameters, structure, kpoints, kpoints_shift)
         self._run_script = SCFRunFiles(job_name, nodes, ppn, queue, email, project, walltime='00:20:00')
@@ -278,10 +273,7 @@ class SCFCalculationWorkflow:
 
     def setup_work_dir(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Configures and genreates work directories and files.
         """
         os.mkdir(self._work_dir)
         runscript_path = os.path.join(self._work_dir, 'job.pbs')
@@ -291,10 +283,7 @@ class SCFCalculationWorkflow:
 
     def run_calculation(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Submits a job.
         """
         os.chdir(self._work_dir)
         job_id = extract_job_id_submission(run_file='job.pbs')
@@ -303,10 +292,7 @@ class SCFCalculationWorkflow:
 
     def update_run_status(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Updates current run status.
         """
         queue_status = extract_run_status(self._run_status['job_id'])
         pw_out_status = check_scf_out(self._work_dir)
@@ -320,30 +306,21 @@ class SCFCalculationWorkflow:
 
     def update_done_status(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Updates status if job is done.
         """
         self._run_status['done'] = check_job_done(self._work_dir)
         return self._run_status['done']
 
     def update_crash_status(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Updates status if job has crashed.
         """
         self._run_status['crash'] = check_crash(self._work_dir)
         return self._run_status['crash']
 
     def setup_work_dir_run(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Initites work directories and runs.
         """
         self.setup_work_dir()
         self.run_calculation()
@@ -351,9 +328,6 @@ class SCFCalculationWorkflow:
 
     def get_total_energy(self):
         """
-        Configures calculations and sets up appropriate directories.
-        Parameters:
-            None.
-
+        Obtains total energy from calculation.
         """
         return get_total_energy(os.path.join(self._work_dir, 'scf.out'))

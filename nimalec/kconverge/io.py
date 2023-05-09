@@ -13,10 +13,7 @@ from pymatgen.io.pwscf import PWOutput
 
 def generate_run_script(run_parameters, file_path):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Generates a run script. 
     """
     runscript_text =  f'''#!/bin/bash\n
 #PBS -N {run_parameters['job_name']}
@@ -36,20 +33,14 @@ mpirun -np $PBS_NP pw.x -in scf.in > scf.out
 
 def extract_job_id_submission(run_file='job.pbs'):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Extracts job ID.
     """
     output = subprocess.Popen("qsub "+run_file, shell=True, stdout=subprocess.PIPE).stdout.read()
     return str(int(output[0:5]))
 
 def extract_run_status(job_id):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Extracts run status.
     """
     output = str(subprocess.Popen("qstat ", shell=True, stdout=subprocess.PIPE).stdout.read())
     out = str(job_id+".*$")
@@ -62,20 +53,14 @@ def extract_run_status(job_id):
 
 def check_scf_out(directory):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Checks if scf.out is presetn.
     """
     outfile = exists(os.path.join(directory, 'scf.out'))
     return outfile
 
 def check_job_done(directory):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Checks if calculation has finished.
     """
     file_path = os.path.join(directory, 'scf.out')
     outfile = exists(file_path)
@@ -90,10 +75,7 @@ def check_job_done(directory):
 
 def check_crash(directory):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Checks if calculation has crashed.
     """
     file_path = os.path.join(directory, 'CRASH')
     outfile = exists(file_path)
@@ -105,10 +87,7 @@ def check_crash(directory):
 
 def get_total_energy(file):
     """
-    Configures calculations and sets up appropriate directories.
-    Parameters:
-        None.
-
+    Gets total energy from an SCF calculation.
     """
     pw_out = PWOutput(file)
     return pw_out.final_energy
